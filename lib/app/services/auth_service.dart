@@ -34,6 +34,7 @@ class AuthService extends GetxService {
     }
   }
 
+  // get current user
   Future<User?> getCurrentUser() async {
     try {
       final user = await account.get();
@@ -43,6 +44,7 @@ class AuthService extends GetxService {
     }
   }
 
+  // get session
   Future<Session> getSession() async {
     try {
       final session = await account.getSession(sessionId: 'current');
@@ -52,6 +54,7 @@ class AuthService extends GetxService {
     }
   }
 
+  // signout
   Future<void> signOut() async {
     await account.deleteSession(sessionId: 'current');
   }
