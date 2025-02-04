@@ -42,16 +42,16 @@
             "$id": "filedrop",
             "$permissions": [
                 "create(\"users\")",
-                "read(\"users\")"
+                "read(\"any\")"
             ],
-            "fileSecurity": false,
+            "fileSecurity": true,
             "name": "filedrop",
             "enabled": true,
             "maximumFileSize": 30000000,
             "allowedFileExtensions": [],
             "compression": "none",
-            "encryption": true,
-            "antivirus": true
+            "encryption": false,
+            "antivirus": false
         }
     ],
     "databases": [
@@ -64,7 +64,10 @@
     "collections": [
         {
             "$id": "files",
-            "$permissions": [],
+            "$permissions": [
+                "read(\"any\")",
+                "create(\"users\")"
+            ],
             "databaseId": "filedrop",
             "name": "files",
             "enabled": true,
@@ -73,10 +76,10 @@
                 {
                     "key": "channel",
                     "type": "string",
-                    "required": true,
+                    "required": false,
                     "array": false,
                     "size": 32,
-                    "default": null
+                    "default": "direct"
                 },
                 {
                     "key": "from",

@@ -19,7 +19,7 @@ const initLat = 13.7563;
 const initLon = 100.5018;
 
 const appwriteHost = '10.0.2.2';
-const nearbyRange = 50;
+const nearbyRange = 10;
 
 RealtimeSubscription? subscription;
 
