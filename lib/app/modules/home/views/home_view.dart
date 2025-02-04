@@ -23,7 +23,13 @@ class HomeView extends GetView<HomeController> {
       ),
       body: Column(
         children: [
-          Text('${appController.currentUser!.email}'),
+          Container(
+            width: context.width,
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(4.0),
+            color: Theme.of(context).colorScheme.inversePrimary,
+            child: Text(appController.currentUser!.email),
+          ),
           Expanded(
             child: Obx(() {
               return (controller.isLoading.value)
@@ -38,7 +44,7 @@ class HomeView extends GetView<HomeController> {
                             child: Text(name.substring(0, 2).toUpperCase()),
                           ),
                           title: Text(name),
-                          trailing: Text('$range'),
+                          trailing: Text(range.toStringAsFixed(1)),
                         );
                       },
                     );
