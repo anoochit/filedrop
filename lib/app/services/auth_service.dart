@@ -1,10 +1,10 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
-import 'package:get/get.dart';
 
 import '../../appwrite.dart';
+import '../data/models/latlon.dart';
 
-class AuthService extends GetxService {
+class AuthService {
   // signin
   Future<Session> signinWithEmailPassword(
       {required String email, required String password}) async {
@@ -55,7 +55,50 @@ class AuthService extends GetxService {
   }
 
   // signout
-  Future<void> signOut() async {
-    await account.deleteSession(sessionId: 'current');
+  Future<dynamic> signOut() async {
+    return await account.deleteSession(sessionId: 'current');
+  }
+
+  Future<void> setUserPostion({required Latlon latlon}) async {
+    //
+    final user = await AuthService().getCurrentUser();
+
+    final userId = user!.$id;
+
+    try {
+      await database.updateDocument(
+        databaseId: databaseId,
+        collectionId: 'users',
+        documentId: userId,
+        data: {
+          'lat': latlon.lat,
+          'lon': latlon.lon,
+          'updated': DateTime.now().toIso8601String(),
+        },
+      );
+    } catch (e) {
+      print('$e');
+    }
+  }
+
+  setUserData({required User user}) async {
+    final userId = user.$id;
+    final userName = user.email;
+    try {
+      await database.createDocument(
+        databaseId: databaseId,
+        collectionId: 'users',
+        documentId: userId,
+        data: {
+          'id': userId,
+          'name': userName,
+          'lat': initLat,
+          'lon': initLon,
+          'updated': DateTime.now().toIso8601String(),
+        },
+      );
+    } catch (e) {
+      print('$e');
+    }
   }
 }

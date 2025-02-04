@@ -6,15 +6,13 @@ import 'package:appwrite/models.dart';
 import '../../appwrite.dart';
 
 class StorageService {
-  final String _bucketId = 'filedrop';
-
   Future<File> upload({
     required Uint8List fileData,
     required String filename,
   }) async {
     try {
       return await storage.createFile(
-        bucketId: _bucketId,
+        bucketId: stroageId,
         fileId: ID.unique(),
         file: InputFile.fromBytes(
           bytes: fileData,
@@ -29,7 +27,7 @@ class StorageService {
   Future<Uint8List> getFile({required String fileId}) async {
     try {
       return await storage.getFileDownload(
-        bucketId: _bucketId,
+        bucketId: stroageId,
         fileId: fileId,
       );
     } catch (e) {

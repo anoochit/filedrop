@@ -7,6 +7,7 @@ import '../routes/app_pages.dart';
 
 class RouteGuard extends GetMiddleware {
   final appController = Get.find<AppController>();
+
   @override
   RouteSettings? redirect(String? route) {
     return (appController.isAuth.value)

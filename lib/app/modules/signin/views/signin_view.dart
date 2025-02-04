@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../../routes/app_pages.dart';
 import '../controllers/signin_controller.dart';
 
 class SigninView extends GetView<SigninController> {
@@ -23,6 +24,13 @@ class SigninView extends GetView<SigninController> {
                   decoration: InputDecoration(
                     hintText: 'email',
                   ),
+                  validator: (value) {
+                    if (!GetUtils.isEmail(value!)) {
+                      return 'Enter email';
+                    }
+
+                    return null;
+                  },
                 ),
 
                 // password
@@ -32,16 +40,34 @@ class SigninView extends GetView<SigninController> {
                     hintText: 'password',
                   ),
                   obscureText: true,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Enter password';
+                    }
+
+                    return null;
+                  },
                 ),
 
-                // button
+                // sign in button
                 FilledButton(
-                  onPressed: () => controller.signIn(
-                    email: controller.emailController.text,
-                    password: controller.passwordController.text,
-                  ),
+                  onPressed: () {
+                    final formState = controller.formKey.currentState;
+                    if (formState!.validate()) {
+                      controller.signIn(
+                        email: controller.emailController.text,
+                        password: controller.passwordController.text,
+                      );
+                    }
+                  },
                   child: Text('SignIn'),
-                )
+                ),
+
+                // sign up button
+                TextButton(
+                  onPressed: () => Get.offAllNamed(Routes.SIGNUP),
+                  child: Text('Don\'t have an account?'),
+                ),
               ],
             ),
           ),
