@@ -73,8 +73,6 @@ subscriptionFileDrop() {
           Filedrop(id: id, from: from, to: to, url: url),
         );
 
-        appController.update();
-
         Get.snackbar(
           'You got a new file!',
           'Tap to download : $url',
@@ -86,6 +84,8 @@ subscriptionFileDrop() {
             );
           },
         );
+
+        appController.update();
       }
     }
   });
