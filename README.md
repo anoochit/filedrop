@@ -14,4 +14,4 @@ Feature
 | ![](/screenshots/Screenshot01.png) | ![](/screenshots/Screenshot02.png) |
 | ---------------------------------- | ---------------------------------- |
 | ![](/screenshots/Screenshot03.png) | ![](/screenshots/Screenshot04.png) |
-| ![](/screenshots/Screenshot05.png) |                                    |
+| ![](/screenshots/Screenshot05.png) | ![](/screenshots/Screenshot06.png) |
