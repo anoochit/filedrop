@@ -1,4 +1,6 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:filedrop/app/controllers/app_controller.dart';
+import 'package:filedrop/app/services/usernearby_service.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -7,6 +9,7 @@ import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({super.key});
+
   @override
   Widget build(BuildContext context) {
     final appController = Get.find<AppController>();
@@ -37,6 +40,7 @@ class HomeView extends GetView<HomeController> {
                   : ListView.builder(
                       itemCount: controller.usersNearby.length,
                       itemBuilder: (BuildContext context, int index) {
+                        final id = controller.usersNearby[index].id;
                         final name = controller.usersNearby[index].name;
                         final range = controller.usersNearby[index].range;
                         return ListTile(
@@ -45,6 +49,7 @@ class HomeView extends GetView<HomeController> {
                           ),
                           title: Text(name),
                           trailing: Text(range.toStringAsFixed(1)),
+                          onTap: () => pickfile(to: id),
                         );
                       },
                     );
@@ -66,6 +71,27 @@ class HomeView extends GetView<HomeController> {
         ],
       ),
     );
+  }
+
+  Future<void> pickfile({required String to}) async {
+    // select file
+    final result = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+    );
+
+    if (result != null) {
+      // upload file
+      final fileName = result.files.first.name;
+      final fileData = await result.files.first.xFile.readAsBytes();
+      final from = controller.appController.currentUser!.$id;
+
+      await controller.fileDrop(
+        fileData: fileData,
+        filename: fileName,
+        from: from,
+        to: to,
+      );
+    }
   }
 }
 

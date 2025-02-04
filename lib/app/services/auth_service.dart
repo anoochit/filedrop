@@ -59,6 +59,7 @@ class AuthService {
     return await account.deleteSession(sessionId: 'current');
   }
 
+  // set user position
   Future<void> setUserPostion({required Latlon latlon}) async {
     //
     final user = await AuthService().getCurrentUser();
@@ -77,10 +78,11 @@ class AuthService {
         },
       );
     } catch (e) {
-      print('$e');
+      throw ('e');
     }
   }
 
+  // set user data in database
   setUserData({required User user}) async {
     final userId = user.$id;
     final userName = user.email;
@@ -98,7 +100,7 @@ class AuthService {
         },
       );
     } catch (e) {
-      print('$e');
+      throw ('$e');
     }
   }
 }

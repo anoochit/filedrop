@@ -16,6 +16,9 @@ Future<void> main() async {
   // init app controller
   Get.put(AppController(), permanent: true);
 
+  // subscription file drop
+  subscriptionFileDrop();
+
   // check current session
   await Get.find<AppController>().checkSession();
 

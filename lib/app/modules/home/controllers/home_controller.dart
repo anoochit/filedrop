@@ -1,8 +1,8 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:filedrop/app/data/models/user_nearby.dart';
 import 'package:filedrop/app/data/models/latlon.dart';
-import 'package:filedrop/app/services/usernearby_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
@@ -12,6 +12,7 @@ import '../../../../appwrite.dart';
 import '../../../routes/app_pages.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/location_service.dart';
+import '../../../services/storage_service.dart';
 
 class HomeController extends GetxController {
   final appController = Get.find<AppController>();
@@ -52,14 +53,53 @@ class HomeController extends GetxController {
 
   // load users nearby
   Future<void> loadUserNearBy() async {
-    final users = await UserNearbyService().getUsersNearby(pos: position.value);
+    try {
+      final users = await getUsersNearby(pos: position.value);
 
-    users.sort((a, b) => a.range.compareTo(b.range));
+      users.sort((a, b) => a.range.compareTo(b.range));
 
-    usersNearby.clear();
-    usersNearby.addAll(users);
+      usersNearby.clear();
+      usersNearby.addAll(users);
 
-    isLoading.value = false;
+      isLoading.value = false;
+    } catch (e) {
+      isLoading.value = false;
+    }
+  }
+
+  // load user nearby wich lasted update
+  Future<List<UserNearby>> getUsersNearby({required Latlon pos}) async {
+    //
+    final users = await database.listDocuments(
+      databaseId: databaseId,
+      collectionId: 'users',
+    );
+
+    List<UserNearby> userNearby = [];
+
+    for (var doc in users.documents) {
+      final deivceId = doc.$id;
+      final deviceName = doc.data['name'];
+      final deviceLat = doc.data['lat'];
+      final deviceLon = doc.data['lon'];
+      final range = Geolocator.distanceBetween(
+        pos.lat,
+        pos.lon,
+        deviceLat,
+        deviceLon,
+      );
+      if (range < 10) {
+        userNearby.add(
+          UserNearby(
+            id: deivceId,
+            name: deviceName,
+            range: range,
+          ),
+        );
+      }
+    }
+
+    return userNearby;
   }
 
   // set init user position
@@ -86,16 +126,50 @@ class HomeController extends GetxController {
       loadUserNearBy();
 
       // update position stream
-      final postionStream = LocationService().getPositionStream();
-      postionSubscription = postionStream.listen((pos) {
-        position.value = Latlon(lat: pos.latitude, lon: pos.longitude);
-        updateCurrentPostion(pos);
-        loadUserNearBy();
-      });
+      // final postionStream = LocationService().getPositionStream();
+      // postionSubscription = postionStream.listen((pos) {
+      //   position.value = Latlon(lat: pos.latitude, lon: pos.longitude);
+      //   updateCurrentPostion(pos);
+      //   loadUserNearBy();
+      // });
     } catch (e) {
       // throw with init location
       setInitPosition();
       loadUserNearBy();
     }
+  }
+
+  // nearby drop file
+  Future<void> fileDrop(
+      {required Uint8List fileData,
+      required String filename,
+      required String from,
+      required String to}) async {
+    Get.snackbar(
+        'Info', 'Start upload file, you will recieve notify when file ready');
+    // upload file to storage
+    StorageService()
+        .upload(fileData: fileData, filename: filename)
+        .then((file) async {
+      // get download file
+      final downloadUrl =
+          'http://$appwriteHost/v1/storage/buckets/$stroageId/files/${file.$id}/view?project=$projectId';
+
+      // add file database with download url
+      await database.createDocument(
+        databaseId: databaseId,
+        collectionId: 'files',
+        documentId: file.$id,
+        data: {
+          'channel': 'direct',
+          'to': to,
+          'from': from,
+          'url': downloadUrl,
+        },
+      );
+
+      // notify reciever
+      Get.snackbar('Info', 'File upload complete!');
+    });
   }
 }

@@ -28,7 +28,9 @@ class LocationService {
           'Location permissions are permanently denied, we cannot request permissions.');
     }
 
-    return await Geolocator.getCurrentPosition();
+    return await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.best,
+    );
   }
 
   // get current position

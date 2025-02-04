@@ -18,6 +18,8 @@ const stroageId = 'filedrop';
 const initLat = 13.7563;
 const initLon = 100.5018;
 
+const appwriteHost = '10.0.2.2';
+
 RealtimeSubscription? subscription;
 
 // init appwrite client
@@ -25,7 +27,7 @@ initAppWrite() {
   // client
   log('init appwrite client');
   client = Client()
-      .setEndpoint('http://10.0.2.2/v1')
+      .setEndpoint('http://$appwriteHost/v1')
       .setProject(projectId)
       .setSelfSigned(
         status: true,
@@ -44,7 +46,7 @@ initAppWrite() {
   realtime = Realtime(client);
 }
 
-subscribeFileDrop() {
+subscriptionFileDrop() {
   subscription = realtime.subscribe(
     ['databases.$databaseId.collections.files.documents'],
   );
