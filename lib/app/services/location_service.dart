@@ -6,6 +6,7 @@ class LocationService {
   bool serviceEnabled = false;
   late LocationPermission permission;
 
+  // check location permission
   Future<Position> checkLocationPermission() async {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
@@ -45,9 +46,11 @@ class LocationService {
     }
   }
 
+  // get position stream
   Stream<Position> getPositionStream() {
     return Geolocator.getPositionStream(
       locationSettings: LocationSettings(
+        timeLimit: Duration(minutes: 5),
         distanceFilter: 5,
       ),
     );

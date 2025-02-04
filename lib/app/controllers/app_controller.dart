@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:appwrite/models.dart';
+import 'package:filedrop/app/data/models/filedrop.dart';
 import 'package:get/get.dart';
 
 import 'package:filedrop/appwrite.dart';
@@ -11,6 +12,8 @@ class AppController extends GetxController {
   //
   RxBool isAuth = false.obs;
   User? currentUser;
+
+  RxList<Filedrop> filedrop = <Filedrop>[].obs;
 
   // check current session
   Future<void> checkSession() async {

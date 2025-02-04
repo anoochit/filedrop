@@ -1,4 +1,6 @@
+import 'package:appwrite/appwrite.dart';
 import 'package:filedrop/app/controllers/app_controller.dart';
+import 'package:filedrop/appwrite.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -50,6 +52,19 @@ class HomeView extends GetView<HomeController> {
                     );
             }),
           ),
+          GetBuilder<AppController>(
+            builder: (controller) {
+              final fileDropTotal = appController.filedrop.length;
+
+              return Container(
+                width: context.width,
+                color: Theme.of(context).colorScheme.onInverseSurface,
+                padding: EdgeInsets.all(4.0),
+                alignment: Alignment.center,
+                child: Text('You recieve $fileDropTotal files'),
+              );
+            },
+          )
         ],
       ),
     );
