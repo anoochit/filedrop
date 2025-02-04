@@ -2,8 +2,8 @@ import 'dart:developer';
 import 'package:appwrite/appwrite.dart';
 import 'package:filedrop/app/controllers/app_controller.dart';
 import 'package:filedrop/app/data/models/filedrop.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 late Client client;
 late Account account;
@@ -42,7 +42,9 @@ initAppWrite() {
 
   // realtime subscribe to database channel
   realtime = Realtime(client);
+}
 
+subscribeFileDrop() {
   subscription = realtime.subscribe(
     ['databases.$databaseId.collections.files.documents'],
   );
@@ -51,7 +53,7 @@ initAppWrite() {
     final createEvent = response.events
         .contains('databases.$databaseId.collections.files.documents.*.create');
 
-    final payload = response.payload;
+    // final payload = response.payload;
     final to = response.payload['to'];
     final from = response.payload['from'];
     final id = response.payload['\$id'];
@@ -62,20 +64,22 @@ initAppWrite() {
       final currentUser = appController.currentUser;
       // is your file
       if (currentUser!.$id == to) {
-        print('Document changed: $payload');
+        // print('Document changed: $payload');
         appController.filedrop.add(
           Filedrop(id: id, from: from, to: to, url: url),
         );
 
         appController.update();
 
-        final fileDropTotal = appController.filedrop.length;
         Get.snackbar(
           'You got a new file',
-          'Tap to download from ${appController.filedrop[fileDropTotal - 1].url}',
-          duration: Duration(seconds: 3),
-          onTap: (snack) {
-            print('download');
+          'Tap to download from $url',
+          duration: Duration(seconds: 5),
+          onTap: (snack) async {
+            await launchUrl(
+              Uri.parse(url),
+              mode: LaunchMode.inAppBrowserView,
+            );
           },
         );
       }

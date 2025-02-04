@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:appwrite/appwrite.dart';
 import 'package:filedrop/app/data/models/user_nearby.dart';
 import 'package:filedrop/app/data/models/latlon.dart';
 import 'package:filedrop/app/services/usernearby_service.dart';
@@ -86,7 +85,7 @@ class HomeController extends GetxController {
       updateCurrentPostion(pos);
       loadUserNearBy();
 
-      // TODO : update position stream
+      // update position stream
       final postionStream = LocationService().getPositionStream();
       postionSubscription = postionStream.listen((pos) {
         position.value = Latlon(lat: pos.latitude, lon: pos.longitude);

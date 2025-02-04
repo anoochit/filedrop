@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:filedrop/app/services/auth_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

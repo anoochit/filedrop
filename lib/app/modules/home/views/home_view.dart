@@ -1,6 +1,4 @@
-import 'package:appwrite/appwrite.dart';
 import 'package:filedrop/app/controllers/app_controller.dart';
-import 'package:filedrop/appwrite.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -14,7 +12,7 @@ class HomeView extends GetView<HomeController> {
     final appController = Get.find<AppController>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Nearby Device'),
+        title: const Text('Nearby'),
         centerTitle: false,
         actions: [
           TextButton(
