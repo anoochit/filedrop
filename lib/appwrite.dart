@@ -19,6 +19,7 @@ const initLat = 13.7563;
 const initLon = 100.5018;
 
 const appwriteHost = '10.0.2.2';
+const nearbyRange = 50;
 
 RealtimeSubscription? subscription;
 
@@ -46,6 +47,7 @@ initAppWrite() {
   realtime = Realtime(client);
 }
 
+// subscribe files collection
 subscriptionFileDrop() {
   subscription = realtime.subscribe(
     ['databases.$databaseId.collections.files.documents'],
@@ -74,8 +76,8 @@ subscriptionFileDrop() {
         appController.update();
 
         Get.snackbar(
-          'You got a new file',
-          'Tap to download from $url',
+          'You got a new file!',
+          'Tap to download : $url',
           duration: Duration(seconds: 5),
           onTap: (snack) async {
             await launchUrl(

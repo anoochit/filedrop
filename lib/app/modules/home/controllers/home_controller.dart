@@ -88,7 +88,7 @@ class HomeController extends GetxController {
         deviceLat,
         deviceLon,
       );
-      if (range < 10) {
+      if (range < nearbyRange) {
         userNearby.add(
           UserNearby(
             id: deivceId,

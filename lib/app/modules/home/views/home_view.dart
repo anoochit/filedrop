@@ -1,6 +1,5 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:filedrop/app/controllers/app_controller.dart';
-import 'package:filedrop/app/services/usernearby_service.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -57,7 +56,7 @@ class HomeView extends GetView<HomeController> {
           ),
           GetBuilder<AppController>(
             builder: (controller) {
-              final fileDropTotal = appController.filedrop.length;
+              final fileDropTotal = controller.filedrop.length;
 
               return Container(
                 width: context.width,
