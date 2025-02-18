@@ -166,5 +166,43 @@
             ],
             "indexes": []
         }
+    ],
+    "functions": [
+        {
+            "$id": "67ac2c260033d3089600",
+            "name": "gostarter",
+            "runtime": "go-1.23",
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "scopes": [],
+            "schedule": "",
+            "timeout": 15,
+            "enabled": true,
+            "logging": true,
+            "entrypoint": "main.go",
+            "commands": "",
+            "path": "functions/gostarter"
+        },
+        {
+            "$id": "67b497bf0025c3a406eb",
+            "name": "hellogo",
+            "runtime": "go-1.23",
+            "execute": [
+                "any"
+            ],
+            "events": [],
+            "scopes": [
+                "users.read"
+            ],
+            "schedule": "",
+            "timeout": 15,
+            "enabled": true,
+            "logging": true,
+            "entrypoint": "main.go",
+            "commands": "",
+            "path": "functions/hellogo"
+        }
     ]
 }

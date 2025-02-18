@@ -1,14 +1,13 @@
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:filedrop/app/data/models/user_nearby.dart';
-import 'package:filedrop/app/data/models/latlon.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
-import 'package:filedrop/app/controllers/app_controller.dart';
-
 import '../../../../appwrite.dart';
+import '../../../controllers/app_controller.dart';
+import '../../../data/models/latlon.dart';
+import '../../../data/models/user_nearby.dart';
 import '../../../routes/app_pages.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/location_service.dart';
@@ -126,12 +125,12 @@ class HomeController extends GetxController {
       loadUserNearBy();
 
       // update position stream
-      // final postionStream = LocationService().getPositionStream();
-      // postionSubscription = postionStream.listen((pos) {
-      //   position.value = Latlon(lat: pos.latitude, lon: pos.longitude);
-      //   updateCurrentPostion(pos);
-      //   loadUserNearBy();
-      // });
+      final postionStream = LocationService().getPositionStream();
+      postionSubscription = postionStream.listen((pos) {
+        position.value = Latlon(lat: pos.latitude, lon: pos.longitude);
+        updateCurrentPostion(pos);
+        loadUserNearBy();
+      });
     } catch (e) {
       // throw with init location
       setInitPosition();
