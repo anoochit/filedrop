@@ -11,7 +11,7 @@ Features
 
 Files 
 
-* [docker-compose.yml](/server/docker-compose.yml) - Appwrite Docker Compose
+* [docker-compose.yml](/server) - Appwrite Docker Compose
 * [appwrite.json](/appwrite.json) - Appwrite project configuration file
 
 ## Screenshots
